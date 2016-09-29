@@ -38,7 +38,7 @@ enable (enable low) to inform the master device of errors.
 
 ![Bus Layout](./diagrams/bus.png)
 
-## Commands
+## Messages
 
 Each message follows this format:
 
@@ -48,7 +48,7 @@ Each message follows this format:
 
 The CRC value is calculated with every byte after the second starting `0xFF`.
 
-### Start commands
+### Start Message
 
 Informs the bootloader that the first page of data is about to be sent.
 
@@ -61,7 +61,7 @@ Informs the bootloader that the first page of data is about to be sent.
 | `0xFF 0xFF` | `0xF1` | 0        | 0      | -    | `0x33 0x20` |
 
 
-### Page command
+### Page Message
 
 Sends an entire page, or less, of data to the bootloader.
 
@@ -75,7 +75,7 @@ Sends an entire page, or less, of data to the bootloader.
 
 This sends a page number 0x01, which is 5 bytes long,
 
-### End command
+### End Message
 
 Informs the bootloader that all the data has been sent an it can reset.
 
