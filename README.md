@@ -42,8 +42,8 @@ enable (enable low) to inform the master device of errors.
 
 Each message follows this format:
 
-|  0     |  1     |  2       |  3              |  4         |  5...    |         |        | 
-|--------|--------|----------|-----------------|------------|-----------------------------|
+|  0     |  1     |  2       |  3              |  4         |  5...n   | n + 1   | n + 2  | 
+|--------|--------|----------|-----------------|------------|----------|---------|--------|
 | `0xFF` | `0xFF` | `<type>` | `<memory addr>` | `<length>` | `<data>` | `<crc>` | `<crc>`|
 
 The CRC value is calculated with every byte after the second starting `0xFF`.
