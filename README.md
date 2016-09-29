@@ -48,12 +48,6 @@ Each message follows this format:
 
 The CRC value is calculated with every byte after the second starting `0xFF`.
 
-`0xFF 0xFF 0xF1 0 0 0 0xFF 0xFF`
-
-`0xFF 0xFF 0xF2 <mem addr> <len> <data> <crc>`
-
-`0xFF 0xFF 0xF3 0 0 0`
-
 ### Start commands
 
 Informs the bootloader that the first page of data is about to be sent.
