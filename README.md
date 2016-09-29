@@ -46,7 +46,7 @@ Each message follows this format:
 |--------|--------|----------|-----------------|------------|----------|---------|--------|
 | `0xFF` | `0xFF` | `<type>` | `<memory addr>` | `<length>` | `<data>` | `<crc>` | `<crc>`|
 
-The CRC value is calculated with every byte after the second starting `0xFF`.
+The 16-bit CRC value is calculated with every byte after the second starting `0xFF`.
 
 ### Start Message
 
@@ -58,7 +58,7 @@ Informs the bootloader that the first page of data is about to be sent.
 
 | Start       | Tyep   | Page num | Length | Data | CRC         | 
 |-------------|--------|----------|--------|------|-------------|
-| `0xFF 0xFF` | `0xF1` | 0        | 0      | -    | `0x33 0x20` |
+| `0xFF 0xFF` | `0xF1` | `0x00`   | `0x00` | -    | `0x33 0x20` |
 
 
 ### Page Message
@@ -69,9 +69,9 @@ Sends an entire page, or less, of data to the bootloader.
 
 **Example Message:** `0xFF 0xFF 0xF2 0x01 0x05 0x01 0x02 0x03 0x04 0x05 0xB8 0xD0`
 
-| Start       | Tyep   | Page num | Length | Data                     | CRC         | 
-|-------------|--------|----------|--------|--------------------------|-------------|
-| `0xFF 0xFF` | `0xF2` | 0x01     | 0x05   | 0x01 0x02 0x03 0x04 0x05 | `0xB8 0xD0` |
+| Start       | Tyep   | Page num | Length | Data                       | CRC         | 
+|-------------|--------|----------|--------|----------------------------|-------------|
+| `0xFF 0xFF` | `0xF2` | `0x01`   | `0x05` | `0x01 0x02 0x03 0x04 0x05` | `0xB8 0xD0` |
 
 This sends a page number 0x01, which is 5 bytes long,
 
@@ -85,5 +85,5 @@ Informs the bootloader that all the data has been sent an it can reset.
 
 | Start       | Tyep   | Page num | Length | Data | CRC         | 
 |-------------|--------|----------|--------|------|-------------|
-| `0xFF 0xFF` | `0xF3` | 0        | 0      | -    | `0xF3 0x81` |
+| `0xFF 0xFF` | `0xF3` | `0x00`   | `0x00` | -    | `0xF3 0x81` |
 
