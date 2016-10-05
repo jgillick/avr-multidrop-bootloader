@@ -9,8 +9,8 @@ F_CPU = 20000000UL
 
 ##  FUSE SETTINGS
 LFUSE = 0xFF
-HFUSE = 0xDA
-EFUSE = 0x05
+HFUSE = 0xDF
+EFUSE = 0x04
 
 ## A directory for common include files
 LIBDIR = .
@@ -65,13 +65,13 @@ HEADERS=$(SOURCES:.c=.h)
 ## Compilation options, type man avr-gcc if you're curious.
 CPPFLAGS = -DF_CPU=$(F_CPU) -DBAUD=$(BAUD) -I. -I$(LIBDIR)
 CFLAGS = -Os -g -std=gnu99 -Wall
-## Use short (8-bit) data types 
-CFLAGS += -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums 
+## Use short (8-bit) data types
+CFLAGS += -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums
 ## Splits up object files per function
-CFLAGS += -ffunction-sections -fdata-sections 
-LDFLAGS = -Wl,-Map,$(TARGET).map 
+CFLAGS += -ffunction-sections -fdata-sections
+LDFLAGS = -Wl,-Map,$(TARGET).map
 ## Optional, but often ends up with smaller code
-LDFLAGS += -Wl,--gc-sections 
+LDFLAGS += -Wl,--gc-sections
 ## Relax shrinks code even more, but makes disassembly messy
 ## LDFLAGS += -Wl,--relax
 ## LDFLAGS += -Wl,-u,vfprintf -lprintf_flt -lm  ## for floating-point printf
@@ -81,7 +81,7 @@ TARGET_ARCH = -mmcu=$(MCU)
 all: $(TARGET).hex size
 
 ## Explicit pattern rules:
-##  To make .o files from .c files 
+##  To make .o files from .c files
 %.o: %.c $(HEADERS) Makefile
 	 $(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c -o $@ $<;
 
@@ -92,7 +92,7 @@ $(TARGET).elf: $(OBJECTS)
 	 $(OBJCOPY) -j .text -j .data -O ihex $< $@
 
 %.eeprom: %.elf
-	$(OBJCOPY) -j .eeprom --change-section-lma .eeprom=0 -O ihex $< $@ 
+	$(OBJCOPY) -j .eeprom --change-section-lma .eeprom=0 -O ihex $< $@
 
 %.lst: %.elf
 	$(OBJDUMP) -S $< > $@

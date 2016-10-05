@@ -1,4 +1,7 @@
 
+#ifndef COMMON_H
+#define COMMON_H
+
 
 // Drive the signal line low
 #define signalEnable() { \
@@ -7,4 +10,7 @@
 }
 
 // Put signal into tri-state
-#define signalDisable() SIGNAL_DDR_REG &= ~(1 << SIGNAL_PIN); 
+#define signalDisable() SIGNAL_DDR_REG &= ~(1 << SIGNAL_PIN);
+
+
+#endif
