@@ -92,12 +92,10 @@ static void writeNextPage() {
 
   // Write to page buffer
   uint16_t word;
-  uint16_t addr;
   for (uint8_t i = 0; i < SPM_PAGESIZE; i += 2) {
     word = pageData[i];
     word |= pageData[i + 1] << 8;
-    addr = pageAddress + i;
-    boot_page_fill_safe(addr, word);
+    boot_page_fill_safe(pageAddress + i, word);
   }
 
   // Save to flash
