@@ -9,8 +9,12 @@ F_CPU = 20000000UL
 
 ##  FUSE SETTINGS
 LFUSE = 0xFF
-HFUSE = 0xDF
+HFUSE = 0xDC
 EFUSE = 0x04
+
+# Where the bootloader should be programmed (find it in section 30.8.14 of the datasheet)
+# 512 word boot size = 0x3E00 word address = 0x7C00 byte address
+BOOTLOADER_ADDRESS = 0x7C00
 
 ## A directory for common include files
 LIBDIR = .
@@ -73,9 +77,12 @@ LDFLAGS = -Wl,-Map,$(TARGET).map
 ## Optional, but often ends up with smaller code
 LDFLAGS += -Wl,--gc-sections
 ## Relax shrinks code even more, but makes disassembly messy
-## LDFLAGS += -Wl,--relax
+LDFLAGS += -Wl,--relax
+## Bootloader start address
+LDFLAGS += -Wl,--section-start=.text=$(BOOTLOADER_ADDRESS)
 ## LDFLAGS += -Wl,-u,vfprintf -lprintf_flt -lm  ## for floating-point printf
 ## LDFLAGS += -Wl,-u,vfprintf -lprintf_min      ## for smaller printf
+
 TARGET_ARCH = -mmcu=$(MCU)
 
 all: $(TARGET).hex size
