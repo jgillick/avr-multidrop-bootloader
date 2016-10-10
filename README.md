@@ -3,6 +3,17 @@
 A bootloader for AVR devices on a multidrop bus, like RS485, where
 all devices can be programmed at once.
 
+## Table of Contents
+
+  * [How it works](#how-it-works)
+  * [The Signal Line](#the-signal-line)
+  * [How to get into the bootloader](#how-to-get-into-the-bootloader)
+    * [Pin value on reset](#pin-value-on-reset)
+    * [With EEPROM](#with-eeprom)
+  * [Communication](#communication) 
+    * [Communication Protocol](#communication-protocol)
+  * [Version Checking](#version-checking)
+
 
 ## How it works
 
@@ -51,7 +62,7 @@ in the main program will need to tell the device to reboot. Either a special com
 button press. Once the device has rebooted, we need to tell the bootloader to receive a
 program. There are two configurable ways baked into the program.
 
-### Input on boot
+### Pin value on reset
 
 This method detects a pin state when the bootloader begins (i.e. a button press).
 If the pin state matches what we expect, the bootloader will enter programming mode.
@@ -70,7 +81,7 @@ Set this option with following settings in `config.h`:
 `BOOTLOAD_ON_PIN` enables this method, and the rest of the values state that we're expecting
 pin `PD2` to be `HIGH` (1) in order to enter programming mode.
 
-### EEPROM value
+### With EEPROM value
 
 This method checks the value of a byte in EEPROM. If the value is `1`, it jumps to the firmware,
 otherwise it enters programming mode.
@@ -88,30 +99,29 @@ In this example, we're enabling the EEPROM setting (`BOOTLOAD_ON_EEPROM`) and ch
 EEPROM value at address `0` (`(uint8_t*)0`).
 
 
-## Messages
-
-All messaging follows the [DiscoBus protocol](https://github.com/jgillick/Disco-Bus-Protocol/blob/master/docs/messages.md),
-with the following commands used to program the device (the command codes can be changed in `config.h`):
-
-The program is divided up into flash pages, the size of which is different for all devices (see `SPM_PAGESIZE`
-or check your datasheet for "page size"), and sent one page at a time.
-
- * Start (`0xF1`) - Sends the version number of the incoming program.
- * Page number (`0xF2`) - Sends the page number that is about to be sent.
- * Page date (`0xF3`) - Sends the page of data.
- * End (`0xF4`) - Programming is complete.
-
-
 ## Communication
 
-By default we expect all messages to be sent via the default UART RX input at 115200 baud.
+By default we communication is expected to be via the default UART RX input at 115200 baud.
 You can easily change how it receives data in the "Communications" section of `config.h`.
 
   * `SERIAL_BAUD` - The serial baud rate
   * `commSetup` - Initializes the communication channel (by default it sets up the serial port).
   * `commReceive` - Receives and returns a single byte from the communication channel.
 
-## Versions
+### Communication Protocol
+
+All communication between the programmer and nodes follow the [DiscoBus protocol](https://github.com/jgillick/Disco-Bus-Protocol/blob/master/docs/messages.md).
+The program is divided up into flash pages, the size of which is different for all devices (see `SPM_PAGESIZE`
+or check your datasheet for "page size"), and sent one page at a time.
+
+The following commands are sent by the programer (the command codes can be changed in `config.h`):
+
+ * Start (`0xF1`) - Starts the process and sends the version number of the incoming program.
+ * Page number (`0xF2`) - Sends the page number that is about to be sent.
+ * Page date (`0xF3`) - Sends the page of data.
+ * End (`0xF4`) - Programming is complete.
+
+## Version Checking
 
 The start message will send the version of the incomin gprogram, which  the bootloader will compare
 against a couple values in the EEPROM. If it matches the current version, the rest of the programming
