@@ -7,8 +7,6 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#define DEBUG
-
 ////////////////////////////////////////////
 /// Configure how bootloader is activated
 ////////////////////////////////////////////
@@ -36,7 +34,7 @@
 // device will skip programming.
 
 // Comment this out to disable
-#define USE_VERSIOING 0
+#define USE_VERSIONING 0
 
 // The EEPROM address of where the major and minimum version numbers
 // are stored. These need to be stored by your program, the bootloader
@@ -89,10 +87,6 @@ inline void commSetup() {
   RS485_DE_DDR_REG |= (1 << RS485_DE_BIT);
   RS485_DE_PORT_REG &= ~(1 << RS485_DE_BIT);
 #endif
-
-#ifdef DEBUG
-  UCSR0B |= (1<<TXEN0); // Enable TX
-#endif
 }
 
 // Receive the next byte of data
@@ -100,13 +94,6 @@ inline uint8_t commReceive() {
   while (!(UCSR0A & (1<<RXC0))); // wait for data
   return UDR0;
 }
-
-#ifdef DEBUG
-inline void commWrite(uint8_t byte) {
-	while (!(UCSR0A & (1<<UDRE0)));	// Wait for empty transmit buffer
-	UDR0 = byte;	// send byte
-}
-#endif
 
 
 ////////////////////////////////////////////

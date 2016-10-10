@@ -57,9 +57,6 @@ static inline uint8_t commReceiveWithCRC() {
 
 // Inform master an error occured while reading the message
 static void error() {
-#ifdef DEBUG
-  PORTB &= ~(1 << PB2);
-#endif
   if (readyForPages) {
     signalEnable();
     upcomingPage = 0;
@@ -137,7 +134,7 @@ static uint8_t processMessage() {
     signalDisable();
 
     // Check version number
-#if USE_VERSIOING == 1
+#if USE_VERSIONING == 1
     if (pageData[0] == eeprom_read_byte(VERSION_MAJOR)
         && pageData[1] == eeprom_read_byte(VERSION_MINOR) ) {
       readyForPages = 1;

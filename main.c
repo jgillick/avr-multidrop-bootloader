@@ -21,9 +21,11 @@ static void writeNextPage();
 static void finishedProgramming();
 
 int main(void) {
-#ifdef DEBUG
-  DDRB |= (1 << PB2);
-#endif
+
+  // Disable watchdog timer (might still be running after reset)
+  MCUSR &= ~(1<<WDRF);
+  WDTCSR |= (1<<WDCE) | (1<<WDE);
+  WDTCSR = 0x00;
 
   // Run the bootloader
   if (shouldRunBootloader()){
@@ -31,9 +33,12 @@ int main(void) {
   }
   // Run the program
   else {
-#ifdef DEBUG
-  PORTB |= (1 << PB2);
+
+    // Default back to bootloader if there are errors in the program
+#if BOOTLOAD_ON_EEPROM == 1
+  eeprom_update_byte(EEPROM_RUN_APP, 0);
 #endif
+
     asm("jmp 0000");
   }
 
@@ -82,27 +87,27 @@ static void bootloader() {
       return;
     }
   }
+
 }
 
 // Write the next page of the program to flash
 static void writeNextPage() {
 
   // Erase page
-  boot_page_erase_safe(pageAddress);
+  boot_page_erase(pageAddress);
+  boot_spm_busy_wait();
 
   // Write to page buffer
   uint16_t word;
   for (uint8_t i = 0; i < SPM_PAGESIZE; i += 2) {
     word = pageData[i];
     word |= pageData[i + 1] << 8;
-    boot_page_fill_safe(pageAddress + i, word);
+    boot_page_fill(pageAddress + i, word);
   }
 
   // Save to flash
-  boot_page_write_safe(pageAddress);
-
-  // Reenable RWW-section again.
-  boot_rww_enable_safe();
+  boot_page_write(pageAddress);
+  boot_spm_busy_wait();
 
   pageAddress += SPM_PAGESIZE;
   numPagesWritten++;
@@ -111,9 +116,8 @@ static void writeNextPage() {
 // Start the program
 static void finishedProgramming() {
 
-#if BOOTLOAD_ON_EEPROM == 1
-  eeprom_write_byte(EEPROM_RUN_APP, 1);
-#endif
+  // Reenable RWW-section again.
+  boot_rww_enable();
 
   signalDisable();
 
