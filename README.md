@@ -3,16 +3,14 @@
 A bootloader for AVR devices on a multidrop bus, like RS485, where
 all devices can be programmed at once.
 
-## Table of Contents
-
-  * [How it works](#how-it-works)
-  * [The Signal Line](#the-signal-line)
-  * [How to get into the bootloader](#how-to-get-into-the-bootloader)
-    * [Pin value on reset](#pin-value-on-reset)
-    * [With EEPROM](#with-eeprom)
-  * [Communication](#communication) 
-    * [Communication Protocol](#communication-protocol)
-  * [Version Checking](#version-checking)
+ * [How it works](#how-it-works)
+ * [The Signal Line](#the-signal-line)
+ * [How to get into the bootloader](#how-to-get-into-the-bootloader)
+   * [Pin value on reset](#pin-value-on-reset)
+   * [With EEPROM](#with-eeprom)
+ * [Communication](#communication) 
+   * [Communication Protocol](#communication-protocol)
+ * [Version Checking](#version-checking)
 
 
 ## How it works
