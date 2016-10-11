@@ -5,7 +5,7 @@ all devices can be programmed at once.
 
  * [How it works](#how-it-works)
  * [The Signal Line](#the-signal-line)
- * [How to get into the bootloader](#how-to-get-into-the-bootloader)
+ * [How to get into program mode](#how-to-get-into-program-mode)
    * [Pin value on reset](#pin-value-on-reset)
    * [With EEPROM](#with-eeprom)
  * [Communication](#communication) 
@@ -53,17 +53,21 @@ enable (enable low) to inform the programmer of errors.
 By default this is set to pin `PD7`, but it can be configured in the "Signal Line" section
 of `config.h`.
 
-## How to get into the bootloader
+## How to get into program mode
 
-The bootloader will start automatically when the microcontroller boots up. So something
-in the main program will need to tell the device to reboot. Either a special command or
-button press. Once the device has rebooted, we need to tell the bootloader to receive a
-program. There are two configurable ways baked into the program.
+By default, when the device resets, the bootloader will run first and then jump to the main program.
+So how do we get the bootloader to enter into programming mode? There are two configurable ways that
+are supported. 
+
+In both methods the main program will need to reset the device, so it can enter the bootloader.
+This can be accomplished using a watchdog timer reset.
 
 ### Pin value on reset
 
 This method detects a pin state when the bootloader begins (i.e. a button press).
 If the pin state matches what we expect, the bootloader will enter programming mode.
+
+For example, the the programmer can raise pin `PD2` to `HIGH`, then then main program should reset the device so the bootloader can see this and enter programming mode.
 
 Set this option with following settings in `config.h`:
 
@@ -81,15 +85,25 @@ pin `PD2` to be `HIGH` (1) in order to enter programming mode.
 
 ### With EEPROM value
 
-This method checks the value of a byte in EEPROM. If the value is `1`, it jumps to the firmware,
-otherwise it enters programming mode.
+This method checks the value of a byte in EEPROM. If the value is `1`, it jumps to the main program,
+otherwise it enters programming mode. (this is the method used in the [test program](/test_program/))
 
-**IMPORTANT:** The bootloader will automatically set this value to `1` before starting your program --
-in case the program was corrupted -- so your program will need to set this value back to `0` to confirm
+For example:
+ * The main program sets the EEPROM value to `0` and resets the device.
+ * The bootloader see's the value is set to `0` and enters programing mode
+ * The new program is written to the device's flash and the bootloader jumps to the new main program.
+ * The main program sets the EEPROM value to `1` so the device will automatically start the program at next reset (otherwise it will be stuck in programming mode)
+
+**IMPORTANT:** The bootloader will automatically set this value to `0` before starting your program --
+in case the program was corrupted (failsafe) -- so your program will need to set this value back to `1` to confirm
 it's working. Otherwise, the next time your device reboots, it will stay in the bootloader.
 
+**Configure**
 ```c
+// Enable
 #define BOOTLOAD_ON_EEPROM 1
+
+// EEPROM address
 #define EEPROM_RUN_APP (uint8_t*) 0
 ```
 
