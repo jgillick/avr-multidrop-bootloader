@@ -4,6 +4,7 @@ A bootloader for AVR devices on a multidrop bus, like RS485, where
 all devices can be programmed at once.
 
  * [How it works](#how-it-works)
+ * [Programmers](#programmers)
  * [The Signal Line](#the-signal-line)
  * [How to get into program mode](#how-to-get-into-program-mode)
    * [Pin value on reset](#pin-value-on-reset)
@@ -40,6 +41,12 @@ resends the pages; starting at the page where signal line became enabled.
 
 8. When pages have been sent without errors, the programmer will send the `END` message,
 informing all nodes to exit the booloader and start their programs.
+
+## Programmers
+
+Here's the list of programmers that support this bootloader:
+
+ * [Node Multibootloader](https://github.com/jgillick/node-multibootloader) - Node library with command line programming interface.
 
 ## The Signal Line
 
