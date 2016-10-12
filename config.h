@@ -53,19 +53,6 @@
 
 
 ////////////////////////////////////////////
-/// RS485
-////////////////////////////////////////////
-
-// Using an RS485 transciever
-#define USE_RS485 1
-
-// Define the pin attached to the transciever's DE & RE pins
-#define RS485_DE_BIT      PD2
-#define RS485_DE_DDR_REG  DDRD
-#define RS485_DE_PORT_REG PORTD
-
-
-////////////////////////////////////////////
 /// Communications
 ////////////////////////////////////////////
 
@@ -80,13 +67,6 @@ inline void commSetup() {
 
   // Set baud
   UBRR0 =  (unsigned char) (((F_CPU) + 8UL * (SERIAL_BAUD)) / (16UL * (SERIAL_BAUD)) - 1UL);
-
-  // RS485
-  // Pull DE/RE pin LOW for receiving
-#if USE_RS485 == 1
-  RS485_DE_DDR_REG |= (1 << RS485_DE_BIT);
-  RS485_DE_PORT_REG &= ~(1 << RS485_DE_BIT);
-#endif
 }
 
 // Receive the next byte of data
