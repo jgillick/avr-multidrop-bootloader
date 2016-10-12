@@ -5,11 +5,12 @@ all devices can be programmed at once.
 
  * [How it works](#how-it-works)
  * [Programmers](#programmers)
+ * [Setup](#setup)
  * [The Signal Line](#the-signal-line)
  * [How to get into program mode](#how-to-get-into-program-mode)
    * [Pin value on reset](#pin-value-on-reset)
    * [With EEPROM](#with-eeprom)
- * [Communication](#communication) 
+ * [Communication](#communication)
    * [Communication Protocol](#communication-protocol)
  * [Version Checking](#version-checking)
 
@@ -48,6 +49,10 @@ Here's the list of programmers that support this bootloader:
 
  * [Node Multibootloader](https://github.com/jgillick/node-multibootloader) - Node library with command line programming interface.
 
+## Setup
+
+Setup instructions are [here](/SETUP.md/).
+
 ## The Signal Line
 
 Since we can assume there will be multiple devices listening on the same communication line,
@@ -64,7 +69,7 @@ of `config.h`.
 
 By default, when the device resets, the bootloader will run first and then jump to the main program.
 So how do we get the bootloader to enter into programming mode? There are two configurable ways that
-are supported. 
+are supported.
 
 In both methods the main program will need to reset the device, so it can enter the bootloader.
 This can be accomplished using a watchdog timer reset.
