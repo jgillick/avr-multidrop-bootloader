@@ -41,10 +41,13 @@ way to go, but you need to use one that provides access to the `DSR` pin for sig
 
 ### BOB-12731 FTDI Breakout
 
-The [BOB-12731](https://www.sparkfun.com/products/12731) FTDI breakout board, by SparkFun, provides all the necessary pins for
-a full RS485 multi-programmer setup.
+The [BOB-12731](https://www.sparkfun.com/products/12731) FTDI breakout board, by SparkFun, provides all the
+necessary pins to interface with an RS485 transceiver. This is a crappy rendering of how to what to hook
+the transceiver to this breakout board.
 
-_CIRCUIT TBD_
+<a href="./diagrams/bob12731_to_485.png">
+  <img src="./diagrams/bob12731_to_485.png" style="max-height:300px;" /></a>
+
 
 ### Custom - DiscoDongle
 
@@ -54,10 +57,8 @@ MacroFab (see README for instructions).
 
 ![DiscoDongle](https://github.com/jgillick/disco-dongle/blob/master/images/photo.jpg)
 
-## Circuit
+##  Bus Circuit
 
-Using an FTDI and cheap RS485 transceivers (MAX485 in the diagram, but I personally prefer [ISL81487](https://www.digikey.com/product-search/en?keywords=ISL81487))
-you can easily connect your programmer to multiple devices on a single bus.
+Here's a basic setup with 3 bus nodes (this diagram does not include power, clock crystals or decoupling caps).
 
-_CIRCUIT TBD_
-
+![Multi-node circuit](./diagrams/multi_circuit.png)
