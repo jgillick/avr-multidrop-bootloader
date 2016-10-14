@@ -46,7 +46,7 @@ necessary pins to interface with an RS485 transceiver. This is a crappy renderin
 the transceiver to this breakout board.
 
 <a href="./diagrams/bob12731_to_485.png">
-  <img src="./diagrams/bob12731_to_485.png" style="max-height:300px;" /></a>
+  <img src="./diagrams/bob12731_to_485.png" height="300" /></a>
 
 
 ### Custom - DiscoDongle
