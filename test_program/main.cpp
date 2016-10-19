@@ -58,18 +58,6 @@ int main() {
 
     // Reboot into bootloader when we receive the bootloader command
     comm.read();
-    if (comm.hasNewMessage()) {
-      rs485.write(0xA1);
-      rs485.write(comm.getCommand());
-
-      if (comm.isAddressedToMe()) {
-        rs485.write(0xA2);
-      } else {
-        rs485.write(0xF2);
-      }
-    } else {
-      rs485.write(0x00);
-    }
     if (comm.hasNewMessage() && comm.isAddressedToMe() && comm.getCommand() == BOOTLOADER_CMD) {
       rebootToBootloader();
     }
