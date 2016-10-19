@@ -1,7 +1,7 @@
 # MultiDrop Bootloader for AVR
 
 A bootloader for AVR devices on a multidrop bus, like RS485, where
-all devices can be programmed at once.
+all devices can be programmed at once. The bootloader combiles down to roughly 800 bytes.
 
  * [How it works](#how-it-works)
  * [Programmers](#programmers)
