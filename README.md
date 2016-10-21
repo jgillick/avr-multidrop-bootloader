@@ -155,7 +155,7 @@ messages will be ignored.
 
 Configure versioning in `config.h` with the following settings:
 
- * `USE_VERSIOING` - Comment this out to disable the feature.
+ * `USE_VERSIONING` - Comment this out to disable the feature.
  * `VERSION_MAJOR` - The EEPROM address of the major version number.
  * `VERSION_MINOR` - The EEPROM address of the minor version number.
 
