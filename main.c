@@ -121,6 +121,7 @@ static void finishedProgramming() {
 
   signalDisable();
 
-  // Jump to program
-  asm("jmp 0000");
+  // Reset
+  wdt_enable(WDTO_15MS);
+  while(1);
 }
