@@ -10,7 +10,7 @@ F_CPU = 20000000UL
 ##  FUSE SETTINGS
 LFUSE = 0xFF
 HFUSE = 0xDC
-EFUSE = 0x04
+EFUSE = 0xFC
 
 # Where the bootloader should be programmed (find it in section 30.8.14 of the datasheet)
 # 512 word boot size = 0x3E00 word address = 0x7C00 byte address

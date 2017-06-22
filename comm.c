@@ -135,8 +135,10 @@ static uint8_t processMessage() {
 
     // Check version number
 #if USE_VERSIONING == 1
-    if (pageData[0] == eeprom_read_byte(VERSION_MAJOR)
-        && pageData[1] == eeprom_read_byte(VERSION_MINOR) ) {
+    uint8_t vmaj = eeprom_read_byte(VERSION_MAJOR);
+    uint8_t vmin = eeprom_read_byte(VERSION_MAJOR);
+    if ((vmaj == 0xFF || pageData[0] == vmaj)
+        && (vmin == 0xFF || pageData[1] == vmin) ) {
       readyForPages = 1;
     }
 #else

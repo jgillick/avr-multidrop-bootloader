@@ -36,7 +36,7 @@ int main(void) {
 
     // Default back to bootloader if there are errors in the program
 #if BOOTLOAD_ON_EEPROM == 1
-  eeprom_update_byte(EEPROM_RUN_APP, 0);
+  eeprom_update_byte(EEPROM_RUN_APP, 0xFF);
 #endif
 
     asm("jmp 0000");
@@ -122,6 +122,9 @@ static void finishedProgramming() {
   signalDisable();
 
   // Reset
+#if BOOTLOAD_ON_EEPROM == 1
+  eeprom_update_byte(EEPROM_RUN_APP, 1);
+#endif
   wdt_enable(WDTO_15MS);
   while(1);
 }

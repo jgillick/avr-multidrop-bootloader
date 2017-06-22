@@ -12,7 +12,7 @@
 ////////////////////////////////////////////
 
 // Enter programming mode when the EEPROM value
-// for address EEPROM_RUN_APP is 0
+// at address EEPROM_RUN_APP is not 1
 #define BOOTLOAD_ON_EEPROM 1
 #define EEPROM_RUN_APP (uint8_t*) 0x00
 

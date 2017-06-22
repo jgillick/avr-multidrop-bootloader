@@ -1,6 +1,6 @@
 /*****************************************************************************
 *
-* A simple blink program that blinks an LED on PB2 and jumps to the
+* A simple blink program that blinks an LED on PB1 and jumps to the
 * bootloader when the serial bus tells it to.
 *
 ****************************************************************************/
@@ -45,7 +45,10 @@ void rebootToBootloader();
 ////////////////////////////////////////////
 
 int main() {
-  DDRB |= (1 << PB2);
+  DDRB |= (1 << PB1);
+  DDRD &= ~(1 << PD5);
+  DDRD &= ~(1 << PD6);
+
 
   DiscobusData485 rs485(PD2, &DDRD, &PORTD);
   DiscobusSlave comm(&rs485);
@@ -64,10 +67,10 @@ int main() {
 
     // Blink LED
     if (ledVal) {
-      PORTB &= ~(1 << PB2);
+      PORTB &= ~(1 << PB1);
       ledVal = 0;
     } else {
-      PORTB |= (1 << PB2);
+      PORTB |= (1 << PB1);
       ledVal = 1;
     }
     _delay_ms(500);
@@ -81,9 +84,9 @@ void setOkay() {
   eeprom_update_byte(EEPROM_VERSION_MINOR, VERSION_MINOR);
 }
 
-// Change EEPROM value to triggerl bootloader then reboot
+// Change EEPROM value to trigger bootloader then reboot
 void rebootToBootloader() {
-  eeprom_update_byte(EEPROM_RUN_APP, 0);
+  eeprom_update_byte(EEPROM_RUN_APP, 0xFF);
   wdt_enable(WDTO_15MS);
   while(1);
 }
